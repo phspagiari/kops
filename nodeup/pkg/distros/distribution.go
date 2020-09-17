@@ -25,6 +25,7 @@ type Distribution string
 
 var (
 	DistributionDebian9      Distribution = "debian9"
+    DistributionCoreOS       Distribution = "coreos"
 	DistributionDebian10     Distribution = "buster"
 	DistributionXenial       Distribution = "xenial"
 	DistributionBionic       Distribution = "bionic"
@@ -60,6 +61,8 @@ func (d Distribution) BuildTags() []string {
 		t = []string{"_centos8"}
 	case DistributionRhel8:
 		t = []string{"_rhel8"}
+	case DistributionCoreOS:
+		t = []string{"_coreos"}
 	case DistributionFlatcar:
 		t = []string{"_flatcar"}
 	case DistributionContainerOS:
@@ -90,7 +93,7 @@ func (d Distribution) IsDebianFamily() bool {
 		return true
 	case DistributionCentos7, DistributionRhel7, DistributionCentos8, DistributionRhel8, DistributionAmazonLinux2:
 		return false
-	case DistributionFlatcar, DistributionContainerOS:
+	case DistributionCoreOS, DistributionFlatcar, DistributionContainerOS:
 		return false
 	default:
 		klog.Fatalf("unknown distribution: %s", d)
@@ -106,7 +109,7 @@ func (d Distribution) IsUbuntu() bool {
 		return true
 	case DistributionCentos7, DistributionRhel7, DistributionCentos8, DistributionRhel8, DistributionAmazonLinux2:
 		return false
-	case DistributionFlatcar, DistributionContainerOS:
+	case DistributionCoreOS, DistributionFlatcar, DistributionContainerOS:
 		return false
 	default:
 		klog.Fatalf("unknown distribution: %s", d)
@@ -120,7 +123,7 @@ func (d Distribution) IsRHELFamily() bool {
 		return true
 	case DistributionXenial, DistributionBionic, DistributionFocal, DistributionDebian9, DistributionDebian10:
 		return false
-	case DistributionFlatcar, DistributionContainerOS:
+	case DistributionCoreOS, DistributionFlatcar, DistributionContainerOS:
 		return false
 	default:
 		klog.Fatalf("unknown distribution: %s", d)
@@ -134,7 +137,7 @@ func (d Distribution) IsSystemd() bool {
 		return true
 	case DistributionCentos7, DistributionRhel7, DistributionCentos8, DistributionRhel8, DistributionAmazonLinux2:
 		return true
-	case DistributionFlatcar:
+	case DistributionCoreOS, DistributionFlatcar:
 		return true
 	case DistributionContainerOS:
 		return true

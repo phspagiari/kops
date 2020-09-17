@@ -43,6 +43,8 @@ func (b *LogrotateBuilder) Build(c *fi.ModelBuilderContext) error {
 	case distros.DistributionContainerOS:
 		klog.Infof("Detected ContainerOS; won't install logrotate")
 		return nil
+    case distros.DistributionCoreOS:
+		klog.Infof("Detected CoreOS; won't install logrotate")
 	case distros.DistributionFlatcar:
 		klog.Infof("Detected Flatcar; won't install logrotate")
 	default:
@@ -118,7 +120,11 @@ func (b *LogrotateBuilder) addLogRotate(c *fi.ModelBuilderContext, name, path st
 	if options.MaxSize == "" {
 		options.MaxSize = "100M"
 	}
-
+	// CoreOS sets "dateext" options, and maxsize-based rotation will fail if
+	// the file has been previously rotated on the same calendar date.
+	if b.Distribution == distros.DistributionCoreOS {
+		options.DateFormat = "-%Y%m%d-%s"
+	}
 	// Flatcar sets "dateext" options, and maxsize-based rotation will fail if
 	// the file has been previously rotated on the same calendar date.
 	if b.Distribution == distros.DistributionFlatcar {

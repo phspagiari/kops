@@ -93,7 +93,7 @@ func FindDistribution(rootfs string) (Distribution, error) {
 		for _, line := range strings.Split(string(usrLibOsRelease), "\n") {
 			line = strings.TrimSpace(line)
 			if line == "ID=coreos" {
-				return "", fmt.Errorf("distribution CoreOS is no longer supported")
+			    return DistributionCoreOS, nil
 			} else if line == "ID=flatcar" {
 				return DistributionFlatcar, nil
 			}
